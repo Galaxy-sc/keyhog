@@ -1,0 +1,28 @@
+name: Build KeyHog Full (Windows)
+
+on:
+  workflow_dispatch: # این خط اجازه می‌دهد با یک دکمه دستی بیلد را شروع کنی
+
+jobs:
+  build:
+    name: Build Windows Executable
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build KeyHog (Release)
+        # طبق مستندات کی‌هاگ، بیلد کردن پوشه cli نسخه کامل را می‌سازد
+        run: cargo build --release --locked --manifest-path crates/cli/Cargo.toml
+
+      - name: Upload Executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: keyhog-windows-full-exe
+          path: target/release/keyhog.exe
