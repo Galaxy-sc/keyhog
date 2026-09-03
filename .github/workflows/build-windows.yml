@@ -1,7 +1,7 @@
 name: Build KeyHog Full (Windows)
 
 on:
-  workflow_dispatch: # این خط اجازه می‌دهد با یک دکمه دستی بیلد را شروع کنی
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,8 +18,9 @@ jobs:
           toolchain: stable
 
       - name: Build KeyHog (Release)
-        # طبق مستندات کی‌هاگ، بیلد کردن پوشه cli نسخه کامل را می‌سازد
         run: cargo build --release --locked --manifest-path crates/cli/Cargo.toml
+        env:
+          RUSTFLAGS: "-A warnings"
 
       - name: Upload Executable
         uses: actions/upload-artifact@v4
